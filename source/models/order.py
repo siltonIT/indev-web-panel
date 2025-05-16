@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from pydantic import BaseModel, validator
 from typing import Optional
 
@@ -10,8 +10,8 @@ class Order(BaseModel):
     order_id: Optional[int] = None
     room_id: int
     guest_id: int
-    check_in_date: datetime 
-    check_out_date: datetime
+    check_in_date: str 
+    check_out_date: str
 
     @validator("check_out_date")
     def validate_dates(cls, v, values):
@@ -27,7 +27,7 @@ class Order(BaseModel):
             "example": {
                 "room_id": "1",
                 "guest_id": "1",
-                "check_in_date": "21.05.2025",
-                "chekc_out_date": "23.05.2025"
+                "check_in_date": "2025-05-21",
+                "chekc_out_date": "2025-05-21"
             }
         }
