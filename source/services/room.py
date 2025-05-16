@@ -24,16 +24,16 @@ class RoomService:
         return response.data[0]
 
     @staticmethod
-    def get_room_by_id(room: Room) -> Dict[str, Any]:
+    def get_room_by_id(room_id: int | None) -> Dict[str, Any]:
         """Получает комнату по ID."""
-        if room.room_id is None:
+        if room_id is None:
             raise HTTPException(status_code=400, detail="ID комнаты не указан")
         
-        response = config.supabase.table("rooms").select("*").eq("room_id", room.room_id).execute()
+        response = config.supabase.table("rooms").select("*").eq("room_id", room_id).execute()
         if not response.data:
             raise HTTPException(
                 status_code=404, 
-                detail=f"Комната с id={room.room_id} не найдена"
+                detail=f"Комната с id={room_id} не найдена"
             )
         return response.data[0]
 
