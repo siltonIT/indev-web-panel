@@ -15,6 +15,7 @@ class Room(BaseModel):
     humidity: float
     pressure: float
     door_status: bool
+    price_per_night: float
 
     class Config:
         """
@@ -29,7 +30,8 @@ class Room(BaseModel):
                 "temperature": 22.5,
                 "humidity": 45.0,
                 "pressure": 1013.0,
-                "door_status": False
+                "door_status": False,
+                "price_per_night": 12.12
             }
         }
 
