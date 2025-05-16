@@ -28,6 +28,6 @@ class Order(BaseModel):
                 "room_id": "1",
                 "guest_id": "1",
                 "check_in_date": "2025-05-21",
-                "chekc_out_date": "2025-05-21"
+                "check_out_date": "2025-05-21"
             }
         }
