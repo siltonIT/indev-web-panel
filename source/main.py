@@ -1,9 +1,9 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.guest import router as guests_router
-from routes.order import router as orders_router
-from routes.room import router as rooms_router
+from source.routes.guest import router as guests_router
+from source.routes.order import router as orders_router
+from source.routes.room import router as rooms_router
 
 app = FastAPI(title="Hotel Management API", description="API для управления отелем")
 
