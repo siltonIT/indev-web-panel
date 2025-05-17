@@ -51,7 +51,7 @@ async def update_room_availability(room_id: int, is_available: bool):
         raise HTTPException(status_code=500, detail=f"Ошибка при обновлении доступности: {str(e)}")
 
 @router.patch("/{room_number}/data/", response_model=Dict[str, Any])
-async def update_room_data(room_number: str, data: RoomDataUpdate):
+async def update_room_data(room_number: str, data: str):
     try:
         return RoomService.update_room_sensor_data(room_number, data)
     except HTTPException as e:
