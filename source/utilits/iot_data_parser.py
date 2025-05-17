@@ -29,7 +29,7 @@ def parse_iot_data(raw_data: str) -> RoomDataUpdate:
             elif key in ["Door"]:
                 data["door_status"] = bool(int(value))
             elif key == "Temp":
-                data["temperature"] = float(value.replace("°C", ""))
+                data["temperature"] = float(value.replace("C", ""))
             elif key == "Pressure":
                 data["pressure"] = float(value.replace("hPa", ""))
             elif key == "Humidity":
@@ -39,6 +39,6 @@ def parse_iot_data(raw_data: str) -> RoomDataUpdate:
         raise ValueError(f"Ошибка при парсинге данных IoT: {str(e)}")
 
 if __name__ == "__main__":
-    test_data = "Light: 1, Door: 1, Ch1: 1, Ch2: 1, Temp: 38.65°C, Pressure: 98157.80hPa, Humidity: 18.81%"
+    test_data = "Light: 1, Door: 1, Ch1: 1, Ch2: 1, Temp: 38.65C, Pressure: 98157.80hPa, Humidity: 18.81%"
     result = parse_iot_data(test_data)
     print(result)
