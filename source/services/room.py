@@ -3,7 +3,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from source import config
-from source.models.room import Room, RoomDataUpdate
+from source.models.room import Room
+from source.utilits.iot_data_parser import parse_iot_data
 from fastapi import HTTPException
 from typing import List, Dict, Any
 
@@ -59,11 +60,13 @@ class RoomService:
         return response.data[0]
 
     @staticmethod
-    def update_room_sensor_data(room_number: str | None, room: RoomDataUpdate) -> Dict[str, Any]:
+    def update_room_sensor_data(room_number: str | None, room_row: str) -> Dict[str, Any]:
         """Обновляет данные датчиков в комнате."""
         if room_number is None:
             raise HTTPException(status_code=400, detail="ID комнаты не указан")
-            
+           
+        room = parse_iot_data(room_row)
+
         response = (
             config.supabase.table("rooms")
             .update({
