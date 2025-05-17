@@ -3,13 +3,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from fastapi import APIRouter, HTTPException
-from source.models.room import (
-    Room,
-    RoomLightUpdate,
-    RoomAvailableUpdate,
-    RoomDoorUpdate,
-    RoomDataUpdate
-)
+from source.models.room import Room, RoomDataUpdate
 from source.services.room import RoomService
 from typing import List, Dict, Any
 
@@ -47,41 +41,19 @@ async def get_room(room_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при получении комнаты: {str(e)}")
 
-@router.patch("/{room_id}/light/", response_model=Dict[str, Any])
-async def update_room_light(room_id: int, light_update: RoomLightUpdate):
-    try:
-        light_update.room_id = room_id  # Добавляем room_id в модель
-        return RoomService.update_room_light_status(light_update)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка при обновлении света: {str(e)}")
-
 @router.patch("/{room_id}/availability/", response_model=Dict[str, Any])
-async def update_room_availability(room_id: int, availability_update: RoomAvailableUpdate):
+async def update_room_availability(room_id: int, is_available: bool):
     try:
-        availability_update.room_id = room_id  # Добавляем room_id в модель
-        return RoomService.update_room_availability(availability_update)
+        return RoomService.update_room_availability(room_id, is_available)
     except HTTPException as e:
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при обновлении доступности: {str(e)}")
 
-@router.patch("/{room_id}/door/", response_model=Dict[str, Any])
-async def update_room_door(room_id: int, door_update: RoomDoorUpdate):
+@router.patch("/{roo_name}/data/", response_model=Dict[str, Any])
+async def update_room_data(room_name: str, data: RoomDataUpdate):
     try:
-        door_update.room_id = room_id  # Добавляем room_id в модель
-        return RoomService.update_room_door_status(door_update)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка при обновлении статуса двери: {str(e)}")
-
-@router.patch("/{room_id}/data/", response_model=Dict[str, Any])
-async def update_room_data(room_id: int, data_update: RoomDataUpdate):
-    try:
-        data_update.room_id = room_id  # Добавляем room_id в модель
-        return RoomService.update_room_sensor_data(data_update)
+        return RoomService.update_room_sensor_data(room_name, data)
     except HTTPException as e:
         raise e
     except Exception as e:

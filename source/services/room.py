@@ -3,16 +3,9 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from source import config
-from source.models.room import (
-    Room,
-    RoomLightUpdate,
-    RoomAvailableUpdate,
-    RoomDoorUpdate,
-    RoomDataUpdate
-)
+from source.models.room import Room, RoomDataUpdate
 from fastapi import HTTPException
 from typing import List, Dict, Any
-
 
 class RoomService:
     @staticmethod
@@ -50,15 +43,15 @@ class RoomService:
         return response.data
 
     @staticmethod
-    def update_room_availability(room: RoomAvailableUpdate) -> Dict[str, Any]:
+    def update_room_availability(room_id: int | None, is_available: bool) -> Dict[str, Any]:
         """Обновляет статус доступности комнаты."""
-        if room.room_id is None:
+        if room_id is None:
             raise HTTPException(status_code=400, detail="ID комнаты не указан")
             
         response = (
             config.supabase.table("rooms")
-            .update({"is_available": room.is_available})
-            .eq("room_id", room.room_id)
+            .update({"is_available": is_available})
+            .eq("room_id", room_id)
             .execute()
         )
         if not response.data:
@@ -66,51 +59,21 @@ class RoomService:
         return response.data[0]
 
     @staticmethod
-    def update_room_light_status(room: RoomLightUpdate) -> Dict[str, Any]:
-        """Обновляет статус освещения в комнате."""
-        if room.room_id is None:
-            raise HTTPException(status_code=400, detail="ID комнаты не указан")
-            
-        response = (
-            config.supabase.table("rooms")
-            .update({"light_status": room.light_status})
-            .eq("room_id", room.room_id)
-            .execute()
-        )
-        if not response.data:
-            raise HTTPException(status_code=404, detail="Комната не найдена")
-        return response.data[0]
-
-    @staticmethod
-    def update_room_door_status(room: RoomDoorUpdate) -> Dict[str, Any]:
-        """Обновляет статус двери в комнате."""
-        if room.room_id is None:
-            raise HTTPException(status_code=400, detail="ID комнаты не указан")
-            
-        response = (
-            config.supabase.table("rooms")
-            .update({"door_status": room.door_status})
-            .eq("room_id", room.room_id)
-            .execute()
-        )
-        if not response.data:
-            raise HTTPException(status_code=404, detail="Комната не найдена")
-        return response.data[0]
-
-    @staticmethod
-    def update_room_sensor_data(room: RoomDataUpdate) -> Dict[str, Any]:
+    def update_room_sensor_data(room_number: str | None, room: RoomDataUpdate) -> Dict[str, Any]:
         """Обновляет данные датчиков в комнате."""
-        if room.room_id is None:
+        if room_number is None:
             raise HTTPException(status_code=400, detail="ID комнаты не указан")
             
         response = (
             config.supabase.table("rooms")
             .update({
+                "light_status": room.light_status,
+                "door_status": room.door_status,
                 "temperature": room.temperature,
                 "humidity": room.humidity,
                 "pressure": room.pressure
             })
-            .eq("room_id", room.room_id)
+            .eq("room_name", room_number)
             .execute()
         )
         if not response.data:

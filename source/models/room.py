@@ -35,63 +35,12 @@ class Room(BaseModel):
             }
         }
 
-
-class RoomLightUpdate(BaseModel):
-    """
-    Модель для обновления статуса света в комнате.
-    """
-    room_id: Optional[int] = None
-    light_status: bool
-
-    class Config:
-        """
-        Конфигурация Pydantic для модели.
-        """
-        json_schema_extra = {
-            "example": {
-                "light_status": True
-            }
-        }
-
-class RoomAvailableUpdate(BaseModel):
-    """
-    Модель для обновления статуса занятости комнаты.
-    """
-    room_id: Optional[int] = None
-    is_available: bool
-
-    class Config:
-        """
-        Конфигурация Pydantic для модели.
-        """
-        json_schema_extra = {
-            "example": {
-                "is_available": True
-            }
-        }
-        
-class RoomDoorUpdate(BaseModel):
-    """
-    Модель для обновления статуса двери.
-    """
-    room_id: Optional[int] = None
-    door_status: bool
-
-    class Config:
-        """
-        Конфигурация Pydantic для модели.
-        """
-        json_schema_extra = {
-            "example": {
-                "door_status": True
-            }
-        }
-
 class RoomDataUpdate(BaseModel):
     """
     Модель для обновления показателей датчиков.
     """
-    room_id: Optional[int] = None
+    light_status: bool
+    door_status: bool
     temperature: float
     humidity: float
     pressure: float
@@ -102,9 +51,10 @@ class RoomDataUpdate(BaseModel):
         """
         json_schema_extra = {
             "example": {
+                "light_status": True,
+                "door_status": True,
                 "temperature": 22.5,
                 "humidity": 45.0,
-                "pressure": 1013.0,
-  
+                "pressure": 1013.0
             }
         }
