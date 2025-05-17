@@ -41,7 +41,7 @@ async def get_room(room_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при получении комнаты: {str(e)}")
 
-@router.patch("/{room_id}/availability/", response_model=Dict[str, Any])
+@router.patch("/{room_id}/available/", response_model=Dict[str, Any])
 async def update_room_availability(room_id: int, is_available: bool):
     try:
         return RoomService.update_room_availability(room_id, is_available)
@@ -50,10 +50,10 @@ async def update_room_availability(room_id: int, is_available: bool):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при обновлении доступности: {str(e)}")
 
-@router.patch("/{roo_name}/data/", response_model=Dict[str, Any])
-async def update_room_data(room_name: str, data: RoomDataUpdate):
+@router.patch("/{room_number}/data/", response_model=Dict[str, Any])
+async def update_room_data(room_number: str, data: RoomDataUpdate):
     try:
-        return RoomService.update_room_sensor_data(room_name, data)
+        return RoomService.update_room_sensor_data(room_number, data)
     except HTTPException as e:
         raise e
     except Exception as e:

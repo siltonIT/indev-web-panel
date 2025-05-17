@@ -73,7 +73,7 @@ class RoomService:
                 "humidity": room.humidity,
                 "pressure": room.pressure
             })
-            .eq("room_name", room_number)
+            .eq("room_number", room_number)
             .execute()
         )
         if not response.data:
